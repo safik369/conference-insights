@@ -58,7 +58,7 @@ with col2:
 run = st.button("▶️ Run")
 
 # --- Helpers ---
-def stream_chat(model: str, messages: list, temperature: float, max_tokens: int) -> Iterable[str]:
+def stream_chat(model: str, messages: list, temperature: float, max_tokens: int):
     """Yield text chunks from a streaming chat completion."""
     with client.chat.completions.create(
         model=model,
@@ -67,11 +67,14 @@ def stream_chat(model: str, messages: list, temperature: float, max_tokens: int)
         max_tokens=max_tokens,
         stream=True,
     ) as stream:
-        for event in stream:
-            if event.choices and event.choices[0].delta:
-                chunk = event.choices[0].delta.get("content") or ""
-                if chunk:
-                    yield chunk
+        for chunk in stream:  # chunk: ChatCompletionChunk
+            if not chunk.choices:
+                continue
+            for choice in chunk.choices:
+                delta = choice.delta  # ChoiceDelta object
+                # Content tokens arrive here; may also get role/tool_calls on other deltas
+                if delta and getattr(delta, "content", None):
+                    yield delta.content
 
 # --- Run inference ---
 if run:
