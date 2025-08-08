@@ -1,0 +1,30 @@
+# Azure SDK Libraries
+azure-ai-ml
+azure-storage-blob
+azure-identity
+
+# AI/ML Core Libraries
+numpy
+pandas
+openai
+scikit-learn
+torch
+torchvision
+torchaudio
+tensorflow
+keras
+transformers
+
+# Experiment Tracking & Deployment
+mlflow
+
+
+
+# Web Development
+flask
+streamlit
+
+
+
+# Other
+python-dotenv
